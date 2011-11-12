@@ -1,0 +1,9 @@
+Package: protobuf-j2me
+Version: 2.3.0-01
+Section: base
+Priority: optional
+Architecture: i386
+Depends: libc6
+Maintainer: Igor Gatis <igorgatis@gmail.com>
+Description: Generates j2me optimized sources for protobuf messages.
+ Generates Java 2 Mobile Edition (J2ME) optimized sources for protobuf messages.

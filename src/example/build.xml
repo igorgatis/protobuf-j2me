@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="protobuf-j2me-examples" basedir="." default="examples">
+  <property file="./antbuild.properties" />
+  <target name="example1">
+    <mkdir dir="example1" />
+    <exec executable="${deploy_dir}/protoc-j2me">
+      <arg value="--proto_path=./" />
+      <arg value="example1.proto" />
+      <arg value="--j2me_out=example1/" />
+    </exec>
+    <javac classpath="./stubs/cldc-1.1.jar:./stubs/midp-2.0.jar:${deploy_dir}/protobuf-j2me-${protobuf.version}.jar"
+           encoding="UTF-8"
+           source="1.3"
+           srcdir="example1"
+           destdir="example1" />
+  </target>
+  <target name="example2">
+    <mkdir dir="example2" />
+    <exec executable="${deploy_dir}/protoc-j2me">
+      <arg value="--proto_path=./" />
+      <arg value="example2.proto" />
+      <arg value="--j2me_out=example2/" />
+      <arg value="--include_builtin_descriptors" />
+    </exec>
+    <javac classpath="./stubs/cldc-1.1.jar:./stubs/midp-2.0.jar:${deploy_dir}/protobuf-j2me-${protobuf.version}.jar"
+           encoding="UTF-8"
+           source="1.3"
+           srcdir="example2"
+           destdir="example2" />
+  </target>
+  <target name="examples" depends="example1, example2" />
+</project>

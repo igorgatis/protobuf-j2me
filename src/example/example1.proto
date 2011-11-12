@@ -1,0 +1,42 @@
+option java_multiple_files = true;
+
+message Person {
+  required string name = 1;
+  required int32 id = 2;
+  optional string email = 3;
+
+  enum PhoneType {
+    MOBILE = 0;
+    HOME = 1;
+    WORK = 2;
+  }
+  message PhoneNumber {
+    required string number = 1;
+    optional PhoneType type = 2 [default = HOME];
+  }
+  required PhoneNumber reqphone = 4;
+  optional PhoneNumber optphone = 5;
+  repeated PhoneNumber repphone = 6;
+  required PhoneType reqtype = 7;
+  optional PhoneType opttype = 8;
+  repeated PhoneType reptype = 9;
+}
+
+message Foo {
+  required int32 reqint = 1;
+  optional int32 optint = 2;
+  repeated int32 repint = 3;
+  required bool reqbool = 4;
+  optional bool optbool = 5;
+  repeated bool repbool = 6;
+  required string reqstr = 7;
+  optional string optstr = 8;
+  repeated string repstr = 9;
+  required Person reqper = 10;
+  optional Person optper = 11;
+  repeated Person repper = 12;
+  required Person.PhoneType reqpho = 13;
+  optional Person.PhoneType toppho = 14;
+  repeated Person.PhoneType reppho = 15;
+  optional int32 hightag = 120;
+}

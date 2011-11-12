@@ -1,0 +1,14 @@
+import "google/protobuf/descriptor.proto";
+
+package google.protobuf.j2me;
+
+option java_package = "com.google.protobuf.j2me";
+
+extend google.protobuf.MessageOptions {
+  optional bool generate_builder = 50001 [default=false];
+  optional bool keep_unknown_fields = 50002 [default=true];
+}
+
+extend google.protobuf.EnumOptions {
+  optional bool cstyle_enum = 50003 [default=false];
+}

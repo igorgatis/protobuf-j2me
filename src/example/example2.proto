@@ -1,0 +1,24 @@
+import "google/protobuf/j2me.proto";
+
+message MsgNoBuilder {
+  option (google.protobuf.j2me.generate_builder) = false;
+}
+
+message MsgKeepUnknowns {
+  option (google.protobuf.j2me.keep_unknown_fields) = true;
+}
+
+message MsgWithCStyleEnum {
+  enum CStyleEnum {
+    option (google.protobuf.j2me.cstyle_enum) = true;
+    VAL1 = 1;
+    VAL2 = 2;
+  }
+  optional CStyleEnum my_enum = 1 [default=VAL2];
+}
+
+enum AnotherCStyleEnum {
+  option (google.protobuf.j2me.cstyle_enum) = true;
+  VAL1 = 1;
+  VAL2 = 2;
+}

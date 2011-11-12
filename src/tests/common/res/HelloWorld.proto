@@ -1,0 +1,82 @@
+option java_multiple_files = true;
+
+message PrimitiveTypesOnly {
+  required bool req_bool = 1;
+  required int32 req_int = 2;
+  required string req_str = 3;
+}
+
+message EmptyMessage {}
+
+message SingleMessage {
+  required EmptyMessage req_msg = 1;
+}
+
+enum Flags {
+  VAL0 = 0;
+  VAL1 = 1;
+  VAL2 = 2;
+}
+
+message Foo {
+  optional string opt_str = 1;
+  extensions 100 to 199;
+}
+
+message Other {}
+
+extend Foo {
+  optional Other opt_other_ext = 100;
+}
+
+message Baz {
+  extend Foo {
+    optional Other opt_other_ext = 101;
+    optional Baz opt_baz_ext = 102;
+    optional int32 opt_int_ext = 103;
+    optional Flags opt_flags_ext = 104;
+    optional string opt_str_ext = 105;
+
+    repeated Other rep_other_ext = 111;
+    repeated Baz rep_baz_ext = 112;
+    repeated int32 rep_int_ext = 113;
+    repeated Flags rep_flags_ext = 114;
+    repeated string rep_str_ext = 115;
+  }
+}
+
+message HelloWorldProto {
+  required int32 req_int = 1;
+  optional int32 opt_int = 2;
+  repeated int32 rep_int = 3;
+  required string req_str = 4;
+  optional string opt_str = 5;
+  repeated string rep_str = 6;
+  required bytes req_bts = 7;
+  optional bytes opt_bts = 8;
+  repeated bytes rep_bts = 9;
+  required Flags req_flg = 10;
+  optional Flags opt_flg = 11;
+  repeated Flags rep_flg = 12;
+  required Foo req_foo = 13;
+  optional Foo opt_foo = 14;
+  repeated Foo rep_foo = 15;
+  required bool req_bool = 16;
+  optional bool opt_bool = 17;
+  repeated bool rep_bool = 18;
+
+  // Defaults
+  required int32 req_int_def = 19 [default=1];
+  optional int32 opt_int_def = 20 [default=2];
+  required Flags req_flg_def = 21 [default=VAL0];
+  optional Flags opt_flg_def = 22 [default=VAL1];
+  required string req_str_def = 23 [default="1"];
+  optional string opt_str_def = 24 [default="2"];
+  required bool req_bool_def = 25 [default=true];
+  optional bool opt_bool_def = 26 [default=false];
+
+  // Packed
+  repeated int32 rep_int_pck = 27 [packed=true];
+  repeated bool rep_bool_pck = 28 [packed=true];
+  repeated Flags rep_flg_pck = 29 [packed=true];
+}
