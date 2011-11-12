@@ -9,7 +9,7 @@
       'type': 'none',
       'dependencies': [
         '../plugin/build.gyp:protoc-j2me',
-        '../runtime/build.gyp:protobuf-j2me-runtime',
+        '../runtime/build.gyp:protobuf-j2me',
         '<(THIRD_PARTY)/protobuf/build.gyp:protobuf-java',
       ],
       'actions': [

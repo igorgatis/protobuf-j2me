@@ -1,8 +1,7 @@
-# vim: ft=python
 {
   'targets': [
     {
-      'target_name': 'protobuf-j2me-runtime',
+      'target_name': 'protobuf-j2me',
       'type': 'none',
       'dependencies': [
         '../plugin/build.gyp:protoc-j2me',
@@ -13,7 +12,7 @@
           'inputs': [ ],
           'outputs': [ 'always_execute_this_action', ],
           'action': [
-            'ant', '-q', 'preverify',
+            'ant', 'preverify',
             '-Dbuild_dir=<(INTERMEDIATE_DIR)/protobuf-j2me/src/runtime',
             '-Ddeploy_dir=<(PRODUCT_DIR)',
           ],
@@ -24,7 +23,7 @@
       'target_name': 'build',
       'type': 'none',
       'dependencies': [
-        'protobuf-j2me-runtime',
+        'protobuf-j2me',
       ],
     },
   ],

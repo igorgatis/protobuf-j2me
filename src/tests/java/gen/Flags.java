@@ -7,6 +7,10 @@ public enum Flags
   VAL2(2, 2),
   ;
   
+  public static final int VAL0_VALUE = 0;
+  public static final int VAL1_VALUE = 1;
+  public static final int VAL2_VALUE = 2;
+  
   
   public final int getNumber() { return value; }
   
@@ -27,8 +31,8 @@ public enum Flags
       internalValueMap =
         new com.google.protobuf.Internal.EnumLiteMap<Flags>() {
           public Flags findValueByNumber(int number) {
-            return Flags.valueOf(number)
-  ;        }
+            return Flags.valueOf(number);
+          }
         };
   
   public final com.google.protobuf.Descriptors.EnumValueDescriptor
@@ -47,6 +51,7 @@ public enum Flags
   private static final Flags[] VALUES = {
     VAL0, VAL1, VAL2, 
   };
+  
   public static Flags valueOf(
       com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
     if (desc.getType() != getDescriptor()) {
@@ -55,15 +60,13 @@ public enum Flags
     }
     return VALUES[desc.getIndex()];
   }
+  
   private final int index;
   private final int value;
+  
   private Flags(int index, int value) {
     this.index = index;
     this.value = value;
-  }
-  
-  static {
-    HelloWorld.getDescriptor();
   }
   
   // @@protoc_insertion_point(enum_scope:Flags)

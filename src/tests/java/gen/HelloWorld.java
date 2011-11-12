@@ -21,9 +21,10 @@ public final class HelloWorld {
   public static final
     com.google.protobuf.GeneratedMessage.GeneratedExtension<
       Foo,
-      Other> optOtherExt =
-        com.google.protobuf.GeneratedMessage
-          .newGeneratedExtension();
+      Other> optOtherExt = com.google.protobuf.GeneratedMessage
+          .newFileScopedGeneratedExtension(
+        Other.class,
+        Other.getDefaultInstance());
   static com.google.protobuf.Descriptors.Descriptor
     internal_static_PrimitiveTypesOnly_descriptor;
   static
@@ -155,36 +156,6 @@ public final class HelloWorld {
               new java.lang.String[] { },
               Baz.class,
               Baz.Builder.class);
-          Baz.optOtherExt.internalInit(
-              Baz.getDescriptor().getExtensions().get(0),
-              Other.class);
-          Baz.optBazExt.internalInit(
-              Baz.getDescriptor().getExtensions().get(1),
-              Baz.class);
-          Baz.optIntExt.internalInit(
-              Baz.getDescriptor().getExtensions().get(2),
-              java.lang.Integer.class);
-          Baz.optFlagsExt.internalInit(
-              Baz.getDescriptor().getExtensions().get(3),
-              Flags.class);
-          Baz.optStrExt.internalInit(
-              Baz.getDescriptor().getExtensions().get(4),
-              java.lang.String.class);
-          Baz.repOtherExt.internalInit(
-              Baz.getDescriptor().getExtensions().get(5),
-              Other.class);
-          Baz.repBazExt.internalInit(
-              Baz.getDescriptor().getExtensions().get(6),
-              Baz.class);
-          Baz.repIntExt.internalInit(
-              Baz.getDescriptor().getExtensions().get(7),
-              java.lang.Integer.class);
-          Baz.repFlagsExt.internalInit(
-              Baz.getDescriptor().getExtensions().get(8),
-              Flags.class);
-          Baz.repStrExt.internalInit(
-              Baz.getDescriptor().getExtensions().get(9),
-              java.lang.String.class);
           internal_static_HelloWorldProto_descriptor =
             getDescriptor().getMessageTypes().get(6);
           internal_static_HelloWorldProto_fieldAccessorTable = new
@@ -193,9 +164,7 @@ public final class HelloWorld {
               new java.lang.String[] { "ReqInt", "OptInt", "RepInt", "ReqStr", "OptStr", "RepStr", "ReqBts", "OptBts", "RepBts", "ReqFlg", "OptFlg", "RepFlg", "ReqFoo", "OptFoo", "RepFoo", "ReqBool", "OptBool", "RepBool", "ReqIntDef", "OptIntDef", "ReqFlgDef", "OptFlgDef", "ReqStrDef", "OptStrDef", "ReqBoolDef", "OptBoolDef", "RepIntPck", "RepBoolPck", "RepFlgPck", },
               HelloWorldProto.class,
               HelloWorldProto.Builder.class);
-          HelloWorld.optOtherExt.internalInit(
-              HelloWorld.getDescriptor().getExtensions().get(0),
-              Other.class);
+          optOtherExt.internalInit(descriptor.getExtensions().get(0));
           return null;
         }
       };
@@ -204,8 +173,6 @@ public final class HelloWorld {
         new com.google.protobuf.Descriptors.FileDescriptor[] {
         }, assigner);
   }
-  
-  public static void internalForceInit() {}
   
   // @@protoc_insertion_point(outer_class_scope)
 }

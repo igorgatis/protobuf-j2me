@@ -2,10 +2,10 @@
 
 public  final class Foo extends
     com.google.protobuf.GeneratedMessage.ExtendableMessage<
-      Foo> {
+      Foo> implements FooOrBuilder {
   // Use Foo.newBuilder() to construct.
-  private Foo() {
-    initFields();
+  private Foo(Builder builder) {
+    super(builder);
   }
   private Foo(boolean noInit) {}
   
@@ -28,27 +28,63 @@ public  final class Foo extends
     return HelloWorld.internal_static_Foo_fieldAccessorTable;
   }
   
+  private int bitField0_;
   // optional string opt_str = 1;
   public static final int OPT_STR_FIELD_NUMBER = 1;
-  private boolean hasOptStr;
-  private java.lang.String optStr_ = "";
-  public boolean hasOptStr() { return hasOptStr; }
-  public java.lang.String getOptStr() { return optStr_; }
+  private java.lang.Object optStr_;
+  public boolean hasOptStr() {
+    return ((bitField0_ & 0x00000001) == 0x00000001);
+  }
+  public String getOptStr() {
+    java.lang.Object ref = optStr_;
+    if (ref instanceof String) {
+      return (String) ref;
+    } else {
+      com.google.protobuf.ByteString bs = 
+          (com.google.protobuf.ByteString) ref;
+      String s = bs.toStringUtf8();
+      if (com.google.protobuf.Internal.isValidUtf8(bs)) {
+        optStr_ = s;
+      }
+      return s;
+    }
+  }
+  private com.google.protobuf.ByteString getOptStrBytes() {
+    java.lang.Object ref = optStr_;
+    if (ref instanceof String) {
+      com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString.copyFromUtf8((String) ref);
+      optStr_ = b;
+      return b;
+    } else {
+      return (com.google.protobuf.ByteString) ref;
+    }
+  }
   
   private void initFields() {
+    optStr_ = "";
   }
+  private byte memoizedIsInitialized = -1;
   public final boolean isInitialized() {
-    if (!extensionsAreInitialized()) return false;
+    byte isInitialized = memoizedIsInitialized;
+    if (isInitialized != -1) return isInitialized == 1;
+    
+    if (!extensionsAreInitialized()) {
+      memoizedIsInitialized = 0;
+      return false;
+    }
+    memoizedIsInitialized = 1;
     return true;
   }
   
   public void writeTo(com.google.protobuf.CodedOutputStream output)
                       throws java.io.IOException {
     getSerializedSize();
-    com.google.protobuf.GeneratedMessage.ExtendableMessage
-      .ExtensionWriter extensionWriter = newExtensionWriter();
-    if (hasOptStr()) {
-      output.writeString(1, getOptStr());
+    com.google.protobuf.GeneratedMessage
+      .ExtendableMessage<Foo>.ExtensionWriter extensionWriter =
+        newExtensionWriter();
+    if (((bitField0_ & 0x00000001) == 0x00000001)) {
+      output.writeBytes(1, getOptStrBytes());
     }
     extensionWriter.writeUntil(200, output);
     getUnknownFields().writeTo(output);
@@ -60,14 +96,21 @@ public  final class Foo extends
     if (size != -1) return size;
   
     size = 0;
-    if (hasOptStr()) {
+    if (((bitField0_ & 0x00000001) == 0x00000001)) {
       size += com.google.protobuf.CodedOutputStream
-        .computeStringSize(1, getOptStr());
+        .computeBytesSize(1, getOptStrBytes());
     }
     size += extensionsSerializedSize();
     size += getUnknownFields().getSerializedSize();
     memoizedSerializedSize = size;
     return size;
+  }
+  
+  private static final long serialVersionUID = 0L;
+  @java.lang.Override
+  protected java.lang.Object writeReplace()
+      throws java.io.ObjectStreamException {
+    return super.writeReplace();
   }
   
   public static Foo parseFrom(
@@ -144,35 +187,51 @@ public  final class Foo extends
   }
   public Builder toBuilder() { return newBuilder(this); }
   
+  @java.lang.Override
+  protected Builder newBuilderForType(
+      com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+    Builder builder = new Builder(parent);
+    return builder;
+  }
   public static final class Builder extends
       com.google.protobuf.GeneratedMessage.ExtendableBuilder<
-        Foo, Builder> {
-    private Foo result;
-    
-    // Construct using Foo.newBuilder()
-    private Builder() {}
-    
-    private static Builder create() {
-      Builder builder = new Builder();
-      builder.result = new Foo();
-      return builder;
+        Foo, Builder> implements FooOrBuilder {
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return HelloWorld.internal_static_Foo_descriptor;
     }
     
-    protected Foo internalGetResult() {
-      return result;
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return HelloWorld.internal_static_Foo_fieldAccessorTable;
+    }
+    
+    // Construct using Foo.newBuilder()
+    private Builder() {
+      maybeForceBuilderInitialization();
+    }
+    
+    private Builder(BuilderParent parent) {
+      super(parent);
+      maybeForceBuilderInitialization();
+    }
+    private void maybeForceBuilderInitialization() {
+      if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+      }
+    }
+    private static Builder create() {
+      return new Builder();
     }
     
     public Builder clear() {
-      if (result == null) {
-        throw new IllegalStateException(
-          "Cannot call clear() after build().");
-      }
-      result = new Foo();
+      super.clear();
+      optStr_ = "";
+      bitField0_ = (bitField0_ & ~0x00000001);
       return this;
     }
     
     public Builder clone() {
-      return create().mergeFrom(result);
+      return create().mergeFrom(buildPartial());
     }
     
     public com.google.protobuf.Descriptors.Descriptor
@@ -184,33 +243,35 @@ public  final class Foo extends
       return Foo.getDefaultInstance();
     }
     
-    public boolean isInitialized() {
-      return result.isInitialized();
-    }
     public Foo build() {
-      if (result != null && !isInitialized()) {
+      Foo result = buildPartial();
+      if (!result.isInitialized()) {
         throw newUninitializedMessageException(result);
       }
-      return buildPartial();
+      return result;
     }
     
     private Foo buildParsed()
         throws com.google.protobuf.InvalidProtocolBufferException {
-      if (!isInitialized()) {
+      Foo result = buildPartial();
+      if (!result.isInitialized()) {
         throw newUninitializedMessageException(
           result).asInvalidProtocolBufferException();
       }
-      return buildPartial();
+      return result;
     }
     
     public Foo buildPartial() {
-      if (result == null) {
-        throw new IllegalStateException(
-          "build() has already been called on this Builder.");
+      Foo result = new Foo(this);
+      int from_bitField0_ = bitField0_;
+      int to_bitField0_ = 0;
+      if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+        to_bitField0_ |= 0x00000001;
       }
-      Foo returnMe = result;
-      result = null;
-      return returnMe;
+      result.optStr_ = optStr_;
+      result.bitField0_ = to_bitField0_;
+      onBuilt();
+      return result;
     }
     
     public Builder mergeFrom(com.google.protobuf.Message other) {
@@ -232,6 +293,14 @@ public  final class Foo extends
       return this;
     }
     
+    public final boolean isInitialized() {
+      if (!extensionsAreInitialized()) {
+        
+        return false;
+      }
+      return true;
+    }
+    
     public Builder mergeFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -244,43 +313,62 @@ public  final class Foo extends
         switch (tag) {
           case 0:
             this.setUnknownFields(unknownFields.build());
+            onChanged();
             return this;
           default: {
             if (!parseUnknownField(input, unknownFields,
                                    extensionRegistry, tag)) {
               this.setUnknownFields(unknownFields.build());
+              onChanged();
               return this;
             }
             break;
           }
           case 10: {
-            setOptStr(input.readString());
+            bitField0_ |= 0x00000001;
+            optStr_ = input.readBytes();
             break;
           }
         }
       }
     }
     
+    private int bitField0_;
     
     // optional string opt_str = 1;
+    private java.lang.Object optStr_ = "";
     public boolean hasOptStr() {
-      return result.hasOptStr();
+      return ((bitField0_ & 0x00000001) == 0x00000001);
     }
-    public java.lang.String getOptStr() {
-      return result.getOptStr();
+    public String getOptStr() {
+      java.lang.Object ref = optStr_;
+      if (!(ref instanceof String)) {
+        String s = ((com.google.protobuf.ByteString) ref).toStringUtf8();
+        optStr_ = s;
+        return s;
+      } else {
+        return (String) ref;
+      }
     }
-    public Builder setOptStr(java.lang.String value) {
+    public Builder setOptStr(String value) {
       if (value == null) {
     throw new NullPointerException();
   }
-  result.hasOptStr = true;
-      result.optStr_ = value;
+  bitField0_ |= 0x00000001;
+      optStr_ = value;
+      onChanged();
       return this;
     }
     public Builder clearOptStr() {
-      result.hasOptStr = false;
-      result.optStr_ = getDefaultInstance().getOptStr();
+      bitField0_ = (bitField0_ & ~0x00000001);
+      optStr_ = getDefaultInstance().getOptStr();
+      onChanged();
       return this;
+    }
+    void setOptStr(com.google.protobuf.ByteString value) {
+      bitField0_ |= 0x00000001;
+      optStr_ = value;
+      onChanged();
     }
     
     // @@protoc_insertion_point(builder_scope:Foo)
@@ -288,7 +376,6 @@ public  final class Foo extends
   
   static {
     defaultInstance = new Foo(true);
-    HelloWorld.internalForceInit();
     defaultInstance.initFields();
   }
   

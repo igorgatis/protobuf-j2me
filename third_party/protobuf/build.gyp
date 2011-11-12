@@ -190,6 +190,7 @@
       ],
       'direct_dependent_settings': {
         'include_dirs': [
+          'trunk',
           'trunk/src',
         ],
         'cflags': [
@@ -225,6 +226,7 @@
       ],
       'direct_dependent_settings': {
         'include_dirs': [
+          'trunk',
           'trunk/src',
         ],
         'cflags': [
@@ -254,6 +256,7 @@
       ],
       'direct_dependent_settings': {
         'include_dirs': [
+          'trunk',
           'trunk/src',
         ],
       },
@@ -284,7 +287,7 @@
           'inputs': [ ],
           'outputs': [ 'always_execute_this_action', ],
           'action': [
-            'ant', '-q',
+            'ant',
             '-Dprotoc=<(PRODUCT_DIR)/protoc',
             '-Dbuild_dir=<(INTERMEDIATE_DIR)/protobuf/trunk/java',
             '-Ddeploy_dir=<(PRODUCT_DIR)',
