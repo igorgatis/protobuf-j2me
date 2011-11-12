@@ -232,13 +232,12 @@ template<typename GeneratorClass, typename DescriptorClass>
 static void GenerateSibling(const string& package_dir,
                             const string& java_package,
                             const DescriptorClass* descriptor,
-                            OutputDirectory* output_directory,
+                            GeneratorContext* context,
                             vector<string>* file_list) {
   string filename = package_dir + descriptor->name() + ".java";
   file_list->push_back(filename);
 
-  scoped_ptr<io::ZeroCopyOutputStream> output(
-    output_directory->Open(filename));
+  scoped_ptr<io::ZeroCopyOutputStream> output(context->Open(filename));
   io::Printer printer(output.get(), '$');
 
   printer.Print(
@@ -255,24 +254,24 @@ static void GenerateSibling(const string& package_dir,
 }
 
 void FileGenerator::GenerateSiblings(const string& package_dir,
-                                     OutputDirectory* output_directory,
+                                     GeneratorContext* context,
                                      vector<string>* file_list) {
   if (file_->options().java_multiple_files()) {
     for (int i = 0; i < file_->enum_type_count(); i++) {
       GenerateSibling<EnumGenerator>(package_dir, java_package_,
                                      file_->enum_type(i),
-                                     output_directory, file_list);
+                                     context, file_list);
     }
     for (int i = 0; i < file_->message_type_count(); i++) {
       GenerateSibling<MessageGenerator>(package_dir, java_package_,
                                         file_->message_type(i),
-                                        output_directory, file_list);
+                                        context, file_list);
     }
     if (HasGenericServices(file_)) {
       for (int i = 0; i < file_->service_count(); i++) {
         GenerateSibling<ServiceGenerator>(package_dir, java_package_,
                                           file_->service(i),
-                                          output_directory, file_list);
+                                          context, file_list);
       }
     }
   }

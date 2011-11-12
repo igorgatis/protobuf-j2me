@@ -2,7 +2,7 @@
 {
   'variables': {
     'THIRD_PARTY': '../../third_party',
-  }
+  },
   'targets': [
     {
       'target_name': 'protobuf-j2me-tests',
