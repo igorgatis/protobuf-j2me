@@ -113,7 +113,7 @@ public  final class Person extends
       type_ = Person.PhoneType.HOME;
     }
     public final boolean isInitialized() {
-      if (!hasNumber) return false;
+      if (!hasNumber()) return false;
       return true;
     }
     
@@ -427,10 +427,10 @@ public  final class Person extends
     opttype_ = Person.PhoneType.MOBILE;
   }
   public final boolean isInitialized() {
-    if (!hasName) return false;
-    if (!hasId) return false;
-    if (!hasReqphone) return false;
-    if (!hasReqtype) return false;
+    if (!hasName()) return false;
+    if (!hasId()) return false;
+    if (!hasReqphone()) return false;
+    if (!hasReqtype()) return false;
     if (!getReqphone().isInitialized()) return false;
     if (hasOptphone()) {
       if (!getOptphone().isInitialized()) return false;

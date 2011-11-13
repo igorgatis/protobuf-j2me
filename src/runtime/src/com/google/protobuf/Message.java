@@ -427,15 +427,11 @@ public abstract class Message {
     return true;
   }
 
-  protected void writeUntil(int number, CodedOutputStream output)
+  protected void writeExtensions(CodedOutputStream output)
       throws IOException {
-    Enumeration supportedExtensions = Extension
-        .getSupportedExtensions(getMessageName());
-    while (supportedExtensions.hasMoreElements()) {
-      Extension ext = (Extension) supportedExtensions.nextElement();
-      if (ext.getNumber() >= number) {
-        continue;
-      }
+    Enumeration keys = this.extensions.keys();
+    while (keys.hasMoreElements()) {
+      Extension ext = (Extension) keys.nextElement();
       if (ext.isRepeated()) {
         Vector list = (Vector) this.extensions.get(ext);
         ext.getType().writeList(ext, list, output);
@@ -447,6 +443,24 @@ public abstract class Message {
         }
       }
     }
+//    Enumeration supportedExtensions = Extension
+//        .getSupportedExtensions(getMessageName());
+//    while (supportedExtensions.hasMoreElements()) {
+//      Extension ext = (Extension) supportedExtensions.nextElement();
+//      if (ext.getNumber() >= number) {
+//        continue;
+//      }
+//      if (ext.isRepeated()) {
+//        Vector list = (Vector) this.extensions.get(ext);
+//        ext.getType().writeList(ext, list, output);
+//      } else {
+//        // hasExtension()
+//        Object value = this.extensions.get(ext);
+//        if (value != null) {
+//          ext.getType().writeElement(true, ext, value, output);
+//        }
+//      }
+//    }
   }
 
   protected int extensionsSerializedSize() {

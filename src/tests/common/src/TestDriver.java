@@ -30,8 +30,12 @@ public abstract class TestDriver {
     }
   }
 
+  private String getTestName(UnitTest test) {
+    return test.getClass().getName().replace('$', '_');
+  }
+
   private void produce(UnitTest test) throws IOException {
-    File file = new File(path, test.getClass().getName() + ".bin");
+    File file = new File(path, getTestName(test) + ".bin");
     FileOutputStream stream = new FileOutputStream(file);
     Object msg = test.newMessage();
     test.writeTo(msg, stream);
@@ -68,7 +72,7 @@ public abstract class TestDriver {
   private boolean consume(UnitTest test, StringBuffer errors)
       throws IOException {
     Object origMsg = test.newMessage();
-    File file = new File(path, test.getClass().getName() + ".bin");
+    File file = new File(path, getTestName(test) + ".bin");
     byte[] origData = readAll(file);
     Object msg = test.readFrom(new ByteArrayInputStream(origData));
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -100,13 +104,13 @@ public abstract class TestDriver {
       throw new InvalidParameterException(args[i]);
     }
     if (path == null) {
-      System.err.println("Specify --path parameter.");
+      System.err.println("Must specify --path parameter.");
       System.exit(1);
     }
-    if (path.exists() == false) {
+    this.produce = produce == null || produce.booleanValue();
+    if (this.produce && path.exists() == false) {
       path.mkdirs();
     }
-    this.produce = produce == null || produce.booleanValue();
   }
 
   public void run() {
@@ -134,9 +138,9 @@ public abstract class TestDriver {
           exc = e;
         }
         if (pass) {
-          System.err.println("  PASS " + test.getClass().getName());
+          System.err.println("  PASS " + getTestName(test));
         } else {
-          System.err.println("  FAIL " + test.getClass().getName());
+          System.err.println("  FAIL " + getTestName(test));
           if (errors.length() > 0) {
             System.err.println("  " + errors);
           }

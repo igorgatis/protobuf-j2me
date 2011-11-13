@@ -76,9 +76,6 @@ class MessageGenerator {
   void GenerateParseFromMethods(io::Printer* printer);
   void GenerateSerializeOneField(io::Printer* printer,
                                  const FieldDescriptor* field);
-  void GenerateSerializeOneExtensionRange(
-      io::Printer* printer, const Descriptor::ExtensionRange* range);
-
   void GenerateBuilder(io::Printer* printer);
   void GenerateCommonBuilderMethods(io::Printer* printer);
   void GenerateParsingMethods(io::Printer* printer);

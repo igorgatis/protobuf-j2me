@@ -9,7 +9,6 @@ public final class Example2 {
   
   public  static final class MsgNoBuilder extends
       com.google.protobuf.Message {
-    private int set_mask_0_;
     public MsgNoBuilder() {
       super("MsgNoBuilder");
       initFields();
@@ -103,7 +102,6 @@ public final class Example2 {
   
   public  static final class MsgKeepUnknowns extends
       com.google.protobuf.Message {
-    private int set_mask_0_;
     public MsgKeepUnknowns() {
       super("MsgKeepUnknowns");
       initFields();

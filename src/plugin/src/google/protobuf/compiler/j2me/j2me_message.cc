@@ -71,13 +71,6 @@ struct FieldOrderingByNumber {
   }
 };
 
-struct ExtensionRangeOrdering {
-  bool operator()(const Descriptor::ExtensionRange* a,
-                  const Descriptor::ExtensionRange* b) const {
-    return a->start < b->start;
-  }
-};
-
 // Sort the fields of the given Descriptor by number into a new[]'d array
 // and return it.
 const FieldDescriptor** SortFieldsByNumber(const Descriptor* descriptor) {
@@ -299,93 +292,33 @@ GenerateMessageSerializationMethods(io::Printer* printer) {
   scoped_array<const FieldDescriptor*> sorted_fields(
     SortFieldsByNumber(descriptor_));
 
-  vector<const Descriptor::ExtensionRange*> sorted_extensions;
-  for (int i = 0; i < descriptor_->extension_range_count(); ++i) {
-    sorted_extensions.push_back(descriptor_->extension_range(i));
-  }
-  sort(sorted_extensions.begin(), sorted_extensions.end(),
-       ExtensionRangeOrdering());
-
   printer->Print(
     "public void writeTo(com.google.protobuf.CodedOutputStream output)\n"
     "                    throws java.io.IOException {\n");
   printer->Indent();
 
-  //if (descriptor_->extension_range_count() > 0) {
-  //  if (descriptor_->options().message_set_wire_format()) {
-  //    printer->Print(
-  //      "com.google.protobuf.GeneratedMessage$lite$\n"
-  //      "  .ExtendableMessage<$classname$>.ExtensionWriter extensionWriter =\n"
-  //      "    newMessageSetExtensionWriter();\n",
-  //      "lite", HasDescriptorMethods(descriptor_) ? "" : "Lite",
-  //      "classname", ClassName(descriptor_));
-  //  } else {
-  //    printer->Print(
-  //      "com.google.protobuf.GeneratedMessage$lite$\n"
-  //      "  .ExtendableMessage<$classname$>.ExtensionWriter extensionWriter =\n"
-  //      "    newExtensionWriter();\n",
-  //      "lite", HasDescriptorMethods(descriptor_) ? "" : "Lite",
-  //      "classname", ClassName(descriptor_));
-  //  }
-  //}
-
-  // Merge the fields and the extension ranges, both sorted by field number.
-  for (int i = 0, j = 0;
-       i < descriptor_->field_count() || j < sorted_extensions.size();
-       ) {
-    if (i == descriptor_->field_count()) {
-      GenerateSerializeOneExtensionRange(printer, sorted_extensions[j++]);
-    } else if (j == sorted_extensions.size()) {
-      GenerateSerializeOneField(printer, sorted_fields[i++]);
-    } else if (sorted_fields[i]->number() < sorted_extensions[j]->start) {
-      GenerateSerializeOneField(printer, sorted_fields[i++]);
-    } else {
-      GenerateSerializeOneExtensionRange(printer, sorted_extensions[j++]);
-    }
+  for (int i = 0; i < descriptor_->field_count(); ++i) {
+      GenerateSerializeOneField(printer, sorted_fields[i]);
   }
-
-  //if (HasUnknownFields(descriptor_)) {
-  //  if (descriptor_->options().message_set_wire_format()) {
-  //    printer->Print(
-  //      "getUnknownFields().writeAsMessageSetTo(output);\n");
-  //  } else {
-  //    printer->Print(
-  //      "getUnknownFields().writeTo(output);\n");
-  //  }
-  //}
+  if (descriptor_->extension_range_count() > 0) {
+    printer->Print("writeExtensions(output);\n");
+  }
 
   printer->Outdent();
   printer->Print(
-    "}\n"
-    "\n"
+      "}\n"
+      "\n");
+
+  printer->Print(
     "public int getSerializedSize() {\n"
     "  int size = 0;\n");
   printer->Indent();
-
   for (int i = 0; i < descriptor_->field_count(); i++) {
     field_generators_.get(sorted_fields[i]).GenerateSerializedSizeCode(printer);
   }
-
   if (descriptor_->extension_range_count() > 0) {
-    if (descriptor_->options().message_set_wire_format()) {
-      printer->Print(
-        "size += extensionsSerializedSizeAsMessageSet();\n");
-    } else {
-      printer->Print(
-        "size += extensionsSerializedSize();\n");
-    }
+    printer->Print("size += extensionsSerializedSize();\n");
   }
-
-  //if (HasUnknownFields(descriptor_)) {
-  //  if (descriptor_->options().message_set_wire_format()) {
-  //    printer->Print(
-  //      "size += getUnknownFields().getSerializedSizeAsMessageSet();\n");
-  //  } else {
-  //    printer->Print(
-  //      "size += getUnknownFields().getSerializedSize();\n");
-  //  }
-  //}
-
   printer->Outdent();
   printer->Print(
     "  return size;\n"
@@ -418,14 +351,6 @@ GenerateParseFromMethods(io::Printer* printer) {
 void MessageGenerator::GenerateSerializeOneField(
     io::Printer* printer, const FieldDescriptor* field) {
   field_generators_.get(field).GenerateSerializationCode(printer);
-}
-
-void MessageGenerator::GenerateSerializeOneExtensionRange(
-    io::Printer* printer, const Descriptor::ExtensionRange* range) {
-  printer->Print(
-    "// Write extensions.\n"
-    "writeUntil($end$, output);\n",
-    "end", SimpleItoa(range->end));
 }
 
 void MessageGenerator::GenerateBuilder(io::Printer* printer) {
@@ -493,13 +418,6 @@ void MessageGenerator::GenerateParsingMethods(io::Printer* printer) {
     "  assertNotReadOnly();\n");
   printer->Indent();
 
-  //if (HasUnknownFields(descriptor_)) {
-  //  printer->Print(
-  //    "com.google.protobuf.UnknownFieldSet.Builder unknownFields =\n"
-  //    "  com.google.protobuf.UnknownFieldSet.newBuilder(\n"
-  //    "    this.getUnknownFields());\n");
-  //}
-
   printer->Print(
     "while (true) {\n");
   printer->Indent();
@@ -509,33 +427,18 @@ void MessageGenerator::GenerateParsingMethods(io::Printer* printer) {
     "switch (tag) {\n");
   printer->Indent();
 
-  string parseMethod = (descriptor_->extension_range_count() > 0) ?
+  const string parseMethod = (descriptor_->extension_range_count() > 0) ?
       "parseUnknownFieldWithExtensions" : "parseUnknownField";
-  //if (HasUnknownFields(descriptor_)) {
-  //  printer->Print(
-  //    "case 0:\n"          // zero signals EOF / limit reached
-  //    "  this.setUnknownFields(unknownFields.build());\n"
-  //    "  return;\n"
-  //    "default: {\n"
-  //    "  if (!parseUnknownField(input, unknownFields,\n"
-  //    "                         extensionRegistry, tag)) {\n"
-  //    "    this.setUnknownFields(unknownFields.build());\n"
-  //    "    return;\n"   // it's an endgroup tag
-  //    "  }\n"
-  //    "  break;\n"
-  //    "}\n");
-  //} else {
-    printer->Print(
-      "case 0:\n"          // zero signals EOF / limit reached
-      "  return;\n"
-      "default: {\n"
-      "  if (!$parse_method$(input, tag)) {\n"
-      "    return;\n"   // it's an endgroup tag
-      "  }\n"
-      "  break;\n"
-      "}\n",
-      "parse_method", parseMethod.c_str());
-  //}
+  printer->Print(
+    "case 0:\n"          // zero signals EOF / limit reached
+    "  return;\n"
+    "default: {\n"
+    "  if (!$parse_method$(input, tag)) {\n"
+    "    return;\n"   // it's an endgroup tag
+    "  }\n"
+    "  break;\n"
+    "}\n",
+    "parse_method", parseMethod.c_str());
 
   for (int i = 0; i < descriptor_->field_count(); i++) {
     const FieldDescriptor* field = sorted_fields[i];

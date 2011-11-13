@@ -410,11 +410,11 @@ public  final class Foo extends
     toppho_ = Person.PhoneType.MOBILE;
   }
   public final boolean isInitialized() {
-    if (!hasReqint) return false;
-    if (!hasReqbool) return false;
-    if (!hasReqstr) return false;
-    if (!hasReqper) return false;
-    if (!hasReqpho) return false;
+    if (!hasReqint()) return false;
+    if (!hasReqbool()) return false;
+    if (!hasReqstr()) return false;
+    if (!hasReqper()) return false;
+    if (!hasReqpho()) return false;
     if (!getReqper().isInitialized()) return false;
     if (hasOptper()) {
       if (!getOptper().isInitialized()) return false;

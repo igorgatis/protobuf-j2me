@@ -24,7 +24,7 @@
       ],
     },
     {
-      'target_name': 'test',
+      'target_name': 'tests',
       'type': 'none',
       'dependencies': [
         'tests/build.gyp:*',

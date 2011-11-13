@@ -64,8 +64,7 @@ public  final class Foo extends
     if (hasOptStr()) {
       output.writeString(1, getOptStr());
     }
-    // Write extensions.
-    writeUntil(200, output);
+    writeExtensions(output);
   }
   
   public int getSerializedSize() {

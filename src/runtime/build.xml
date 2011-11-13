@@ -19,11 +19,16 @@
       basedir="${build_dir}/classes" />
   </target>
   <target name="preverify" depends="build">
-    <proguard configuration="tools/mobile.pro">
-      <libraryjar path="stubs/cldc-1.1.jar" />
-      <libraryjar path="stubs/midp-2.0.jar" />
-      <injar path="${deploy_dir}/protobuf-j2me.jar" />
-      <outjar path="${deploy_dir}/protobuf-j2me_preverified.jar" />
+    <proguard>
+      -libraryjars stubs/cldc-1.1.jar
+      -libraryjars stubs/midp-2.0.jar
+      -injars ${build_dir}/protobuf-j2me.jar
+      -outjars ${deploy_dir}/protobuf-j2me.jar
+      -printmapping ${build_dir}/protobuf-j2me.map 
+      -allowaccessmodification
+      -keep public class * {
+          public protected *;
+      }
     </proguard>
   </target>
 </project>

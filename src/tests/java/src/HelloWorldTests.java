@@ -7,11 +7,11 @@ import com.google.protobuf.Message;
 public class HelloWorldTests implements TestSet {
 
   public void registerTests(TestDriver driver) {
-    driver.register(new PrimitiveTypesOnlyTest());
-    driver.register(new EmptyMessageTest());
-    driver.register(new SingleMessageTest());
+    //driver.register(new PrimitiveTypesOnlyTest());
+    //driver.register(new EmptyMessageTest());
+    //driver.register(new SingleMessageTest());
     driver.register(new QuickExtensionTest());
-    driver.register(new HelloWorldProtoTest());
+    //driver.register(new HelloWorldProtoTest());
   }
 
   public static class PrimitiveTypesOnlyTest extends JavaUnitTestAdapter {
@@ -60,25 +60,25 @@ public class HelloWorldTests implements TestSet {
   public static class QuickExtensionTest extends JavaUnitTestAdapter {
     public Message produce() throws IOException {
       Foo.Builder foo = Foo.newBuilder();
-      foo.setOptStr("opt_str");
-      foo.setExtension(HelloWorld.optOtherExt, Other.newBuilder().build());
+      //foo.setOptStr("opt_str");
+//      foo.setExtension(HelloWorld.optOtherExt, Other.newBuilder().build());
       foo.setExtension(Baz.optOtherExt, Other.newBuilder().build());
       foo.setExtension(Baz.optBazExt, Baz.newBuilder().build());
-      foo.setExtension(Baz.optIntExt, new Integer(10));
-      foo.setExtension(Baz.optFlagsExt, Flags.VAL2);
-      foo.setExtension(Baz.optStrExt, "optStrExt");
-
-      foo.addExtension(Baz.repOtherExt, Other.newBuilder().build());
-      foo.addExtension(Baz.repBazExt, Baz.newBuilder().build());
-      foo.addExtension(Baz.repIntExt, new Integer(10));
-      foo.addExtension(Baz.repFlagsExt, Flags.VAL2);
-      foo.addExtension(Baz.repStrExt, "repStrExt");
-
-      foo.addExtension(Baz.repOtherExt, Other.newBuilder().build());
-      foo.addExtension(Baz.repBazExt, Baz.newBuilder().build());
-      foo.addExtension(Baz.repIntExt, new Integer(10));
-      foo.addExtension(Baz.repFlagsExt, Flags.VAL2);
-      foo.addExtension(Baz.repStrExt, "repStrExt");
+//      foo.setExtension(Baz.optIntExt, new Integer(10));
+//      foo.setExtension(Baz.optFlagsExt, Flags.VAL2);
+//      foo.setExtension(Baz.optStrExt, "optStrExt");
+//
+//      foo.addExtension(Baz.repOtherExt, Other.newBuilder().build());
+//      foo.addExtension(Baz.repBazExt, Baz.newBuilder().build());
+//      foo.addExtension(Baz.repIntExt, new Integer(10));
+//      foo.addExtension(Baz.repFlagsExt, Flags.VAL2);
+//      foo.addExtension(Baz.repStrExt, "repStrExt");
+//
+//      foo.addExtension(Baz.repOtherExt, Other.newBuilder().build());
+//      foo.addExtension(Baz.repBazExt, Baz.newBuilder().build());
+//      foo.addExtension(Baz.repIntExt, new Integer(10));
+//      foo.addExtension(Baz.repFlagsExt, Flags.VAL2);
+//      foo.addExtension(Baz.repStrExt, "repStrExt");
       return foo.build();
     }
 
