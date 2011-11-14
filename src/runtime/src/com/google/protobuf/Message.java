@@ -233,7 +233,7 @@ public abstract class Message {
           // input.readGroup(ext.getNumber(), subBuilder);
           return input.skipField(tag);
         } else {
-          subBuilder.mergeFrom(input);
+          input.readMessage(subBuilder);
         }
         value = subBuilder;
       } else if (ext.getType() == FieldType.ENUM) {
@@ -301,50 +301,57 @@ public abstract class Message {
 
   // Repeated values.
 
-  private Vector getOrCreateList(Extension ext) {
+  private Vector getList(Extension ext) {
     Extension.checkExtensionSupport(getMessageName(), ext);
     if (!ext.isRepeated()) {
       throw new RuntimeException("Not a repeated extension.");
     }
-    Vector list = (Vector) this.extensions.get(ext);
+    return (Vector) this.extensions.get(ext);
+  }
+
+  private Vector getOrCreateList(Extension ext) {
+    Vector list = (Vector) getList(ext);
     if (list == null) {
-      list = new Vector();
+      list = new Vector(1);
       this.extensions.put(ext, list);
     }
     return list;
   }
 
   public Enumeration getExtensionList(Extension ext) {
-    Vector list = getOrCreateList(ext);
-    return list.elements();
+    Vector list = getList(ext);
+    if (list != null) {
+      return list.elements();
+    }
+    return new Vector(0).elements();
   }
 
   public int getExtensionCount(Extension ext) {
-    Vector list = getOrCreateList(ext);
-    return list.size();
+    Vector list = getList(ext);
+    return list != null ? list.size() : 0;
   }
 
   public Object getExtension(Extension ext, int index) {
-    Vector list = getOrCreateList(ext);
+    Vector list = getList(ext);
+    if (list == null) {
+      throw new ArrayIndexOutOfBoundsException(index);
+    }
     return list.elementAt(index);
   }
 
   public void setExtension(Extension ext, int index, Object obj) {
     assertNotReadOnly();
-    Vector list = getOrCreateList(ext);
-    list.setElementAt(obj, index);
+    getOrCreateList(ext).setElementAt(obj, index);
   }
 
   public void addExtension(Extension ext, Object obj) {
     assertNotReadOnly();
-    Vector list = getOrCreateList(ext);
-    list.addElement(obj);
+    getOrCreateList(ext).addElement(obj);
   }
 
   public void clearExtension(Extension ext) {
     assertNotReadOnly();
-    Vector list = getOrCreateList(ext);
-    list.removeAllElements();
+    this.extensions.remove(ext);
   }
 
   // -----------------------------------------------------------------------
@@ -355,10 +362,9 @@ public abstract class Message {
     if (getMessageName().equals(msg.getMessageName()) == false) {
       throw new RuntimeException("Type mismtach.");
     }
-    Enumeration supportedExtensions = Extension
-        .getSupportedExtensions(getMessageName());
-    while (supportedExtensions.hasMoreElements()) {
-      Extension ext = (Extension) supportedExtensions.nextElement();
+    Enumeration keys = this.extensions.keys();
+    while (keys.hasMoreElements()) {
+      Extension ext = (Extension) keys.nextElement();
       Object localValue = this.extensions.get(ext);
       Object otherValue = msg.extensions.get(ext);
       if (localValue != null && otherValue != null) {
@@ -374,31 +380,27 @@ public abstract class Message {
 
   protected int extensionsHashCode() {
     int hash = 0;
-    Enumeration supportedExtensions = Extension
-        .getSupportedExtensions(getMessageName());
-    while (supportedExtensions.hasMoreElements()) {
-      Extension ext = (Extension) supportedExtensions.nextElement();
+    Enumeration keys = this.extensions.keys();
+    while (keys.hasMoreElements()) {
+      Extension ext = (Extension) keys.nextElement();
+      Object value = this.extensions.get(ext);
       if (ext.isRepeated()) {
-        Vector list = (Vector) this.extensions.get(ext);
+        Vector list = (Vector) value;
         for (int i = 0; i < list.size(); i++) {
           hash += 35 * list.elementAt(i).hashCode();
         }
       } else {
-        // hasExtension()
-        Object value = this.extensions.get(ext);
-        if (value != null) {
-          hash += 35 * value.hashCode();
-        }
+        hash += 35 * value.hashCode();
       }
     }
     return hash;
   }
 
   protected boolean extensionsAreInitialized() {
-    Enumeration supportedExtensions = Extension
-        .getSupportedExtensions(getMessageName());
-    while (supportedExtensions.hasMoreElements()) {
-      Extension ext = (Extension) supportedExtensions.nextElement();
+    Enumeration keys = this.extensions.keys();
+    while (keys.hasMoreElements()) {
+      Extension ext = (Extension) keys.nextElement();
+      Object value = this.extensions.get(ext);
       // Check that all required fields are present.
       if (ext.isRequired() && hasExtension(ext) == false) {
         return false;
@@ -414,12 +416,8 @@ public abstract class Message {
             }
           }
         } else {
-          // hasExtension()
-          Message msg = (Message) this.extensions.get(ext);
-          if (msg != null) {
-            if (msg.isInitialized() == false) {
-              return false;
-            }
+          if (((Message) value).isInitialized() == false) {
+            return false;
           }
         }
       }
@@ -427,57 +425,29 @@ public abstract class Message {
     return true;
   }
 
-  protected void writeExtensions(CodedOutputStream output)
-      throws IOException {
+  protected void writeExtensions(CodedOutputStream output) throws IOException {
     Enumeration keys = this.extensions.keys();
     while (keys.hasMoreElements()) {
       Extension ext = (Extension) keys.nextElement();
+      Object value = this.extensions.get(ext);
       if (ext.isRepeated()) {
-        Vector list = (Vector) this.extensions.get(ext);
-        ext.getType().writeList(ext, list, output);
+        ext.getType().writeList(ext, (Vector) value, output);
       } else {
-        // hasExtension()
-        Object value = this.extensions.get(ext);
-        if (value != null) {
-          ext.getType().writeElement(true, ext, value, output);
-        }
+        ext.getType().writeElement(true, ext, value, output);
       }
     }
-//    Enumeration supportedExtensions = Extension
-//        .getSupportedExtensions(getMessageName());
-//    while (supportedExtensions.hasMoreElements()) {
-//      Extension ext = (Extension) supportedExtensions.nextElement();
-//      if (ext.getNumber() >= number) {
-//        continue;
-//      }
-//      if (ext.isRepeated()) {
-//        Vector list = (Vector) this.extensions.get(ext);
-//        ext.getType().writeList(ext, list, output);
-//      } else {
-//        // hasExtension()
-//        Object value = this.extensions.get(ext);
-//        if (value != null) {
-//          ext.getType().writeElement(true, ext, value, output);
-//        }
-//      }
-//    }
   }
 
   protected int extensionsSerializedSize() {
-    Enumeration supportedExtensions = Extension
-        .getSupportedExtensions(getMessageName());
     int size = 0;
-    while (supportedExtensions.hasMoreElements()) {
-      Extension ext = (Extension) supportedExtensions.nextElement();
+    Enumeration keys = this.extensions.keys();
+    while (keys.hasMoreElements()) {
+      Extension ext = (Extension) keys.nextElement();
+      Object value = this.extensions.get(ext);
       if (ext.isRepeated()) {
-        Vector list = getOrCreateList(ext);
-        size += ext.getType().computeListSerializedSize(ext, list);
+        size += ext.getType().computeListSerializedSize(ext, (Vector) value);
       } else {
-        // hasExtension()
-        Object value = this.extensions.get(ext);
-        if (value != null) {
-          size += ext.getType().computeSerializedSize(true, ext, value);
-        }
+        size += ext.getType().computeSerializedSize(true, ext, value);
       }
     }
     return size;

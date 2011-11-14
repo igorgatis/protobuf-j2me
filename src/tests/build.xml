@@ -11,11 +11,10 @@
       <arg value="--j2me_out=j2me/gen" />
       <arg value="common/res/HelloWorld.proto" />
     </exec>
-    <copy todir="java/lib" file="${deploy_dir}/protobuf-java.jar" />
-    <copy todir="j2me/lib" file="${deploy_dir}/protobuf-j2me.jar" />
   </target>
   <target name="java_build" depends="generate">
     <mkdir dir="${build_dir}/java/classes" />
+    <!--copy todir="java/lib" file="${deploy_dir}/protobuf-java.jar" /-->
     <javac destdir="${build_dir}/java/classes">
       <src path="common/src/" />
       <src path="java/src" />
@@ -28,23 +27,18 @@
       <fileset dir="${build_dir}/java/classes" includes="**/*.class" />
       <zipfileset src="java/lib/protobuf-java.jar" excludes="META-INF/*" />
     </jar>
-    <delete dir="java/classes" />
   </target>
   <target name="j2me_build" depends="generate">
     <mkdir dir="${build_dir}/j2me/classes" />
     <javac destdir="${build_dir}/j2me/classes">
+      <src path="../runtime/src" />
       <src path="common/src" />
       <src path="j2me/src" />
       <src path="j2me/gen" />
-      <classpath>
-        <pathelement location="j2me/lib/protobuf-j2me.jar" />
-      </classpath>
     </javac>
     <jar jarfile="${build_dir}/${ant.project.name}_j2me.jar" manifest="common/src/MANIFEST.MF">
       <fileset dir="${build_dir}/j2me/classes" includes="**/*.class" />
-      <zipfileset src="j2me/lib/protobuf-j2me.jar" excludes="META-INF/*" />
     </jar>
-    <delete dir="j2me/classes" />
   </target>
   <target name="run" depends="java_build,j2me_build">
     <mkdir dir="${build_dir}/java/data" />

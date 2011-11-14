@@ -2,16 +2,23 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import com.google.protobuf.ByteString;
+import com.google.protobuf.ExtensionRegistry;
 import com.google.protobuf.Message;
 
 public class HelloWorldTests implements TestSet {
 
+  static ExtensionRegistry registry;
+  static {
+    registry = ExtensionRegistry.newInstance();
+    HelloWorld.registerAllExtensions(registry);
+  }
+
   public void registerTests(TestDriver driver) {
-    //driver.register(new PrimitiveTypesOnlyTest());
-    //driver.register(new EmptyMessageTest());
-    //driver.register(new SingleMessageTest());
+    driver.register(new PrimitiveTypesOnlyTest());
+    driver.register(new EmptyMessageTest());
+    driver.register(new SingleMessageTest());
     driver.register(new QuickExtensionTest());
-    //driver.register(new HelloWorldProtoTest());
+    driver.register(new HelloWorldProtoTest());
   }
 
   public static class PrimitiveTypesOnlyTest extends JavaUnitTestAdapter {
@@ -24,9 +31,7 @@ public class HelloWorldTests implements TestSet {
     }
 
     public Message parse(InputStream input) throws IOException {
-      PrimitiveTypesOnly.Builder msg = PrimitiveTypesOnly.newBuilder();
-      msg.mergeFrom(input);
-      return msg.build();
+      return PrimitiveTypesOnly.parseFrom(input, registry);
     }
   }
 
@@ -37,9 +42,7 @@ public class HelloWorldTests implements TestSet {
     }
 
     public Message parse(InputStream input) throws IOException {
-      EmptyMessage.Builder msg = EmptyMessage.newBuilder();
-      msg.mergeFrom(input);
-      return msg.build();
+      return EmptyMessage.parseFrom(input, registry);
     }
   }
 
@@ -51,9 +54,7 @@ public class HelloWorldTests implements TestSet {
     }
 
     public Message parse(InputStream input) throws IOException {
-      SingleMessage.Builder msg = SingleMessage.newBuilder();
-      msg.mergeFrom(input);
-      return msg.build();
+      return SingleMessage.parseFrom(input, registry);
     }
   }
 
@@ -83,7 +84,7 @@ public class HelloWorldTests implements TestSet {
     }
 
     public Message parse(InputStream input) throws IOException {
-      return Foo.parseFrom(input);
+      return Foo.parseFrom(input, registry);
     }
   }
 
@@ -104,7 +105,7 @@ public class HelloWorldTests implements TestSet {
     }
 
     public Message parse(InputStream input) throws IOException {
-      return HelloWorldProto.parseFrom(input);
+      return HelloWorldProto.parseFrom(input, registry);
     }
   }
 }

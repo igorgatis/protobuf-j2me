@@ -7,11 +7,11 @@ import com.google.protobuf.Message;
 public class HelloWorldTests implements TestSet {
 
   public void registerTests(TestDriver driver) {
-    //driver.register(new PrimitiveTypesOnlyTest());
-    //driver.register(new EmptyMessageTest());
-    //driver.register(new SingleMessageTest());
+    driver.register(new PrimitiveTypesOnlyTest());
+    driver.register(new EmptyMessageTest());
+    driver.register(new SingleMessageTest());
     driver.register(new QuickExtensionTest());
-    //driver.register(new HelloWorldProtoTest());
+    driver.register(new HelloWorldProtoTest());
   }
 
   public static class PrimitiveTypesOnlyTest extends J2meUnitTestAdapter {

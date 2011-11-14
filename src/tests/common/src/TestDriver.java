@@ -79,6 +79,8 @@ public abstract class TestDriver {
     test.writeTo(msg, baos);
     byte[] data = baos.toByteArray();
     if (!origMsg.equals(msg)) {
+      System.err.println("orig=" + origMsg);
+      System.err.println("parsed=" + msg);
       errors.append("  Messages are different.");
       return false;
     }
