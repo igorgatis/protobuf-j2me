@@ -2,9 +2,9 @@
 <project name="protobuf-j2me.runtime-tests" default="run" basedir=".">
   <property file="./antbuild.properties" />
   <target name="generate">
-    <mkdir dir="${build_dir}/java/gen" />
-    <mkdir dir="${build_dir}/j2me/gen" />
-    <exec executable="${deploy_dir}/protoc-j2me">
+    <mkdir dir="java/gen" />
+    <mkdir dir="j2me/gen" />
+    <exec executable="${protoc}">
       <arg value="--proto_path=../plugin/src/" />
       <arg value="--proto_path=common/res" />
       <arg value="--java_out=java/gen" />
