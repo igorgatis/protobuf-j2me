@@ -1,8 +1,7 @@
 solutions = [
   {
     "name"        : ".",
-    # NOTE: Usage of '.git' extension requires fix in gclient.
-    "url"         : "https://code.google.com/p/protobuf-j2me/.git",
+    "url"         : "git+https://code.google.com/p/protobuf-j2me",
     "deps_file"   : "DEPS",
     "custom_deps" : {
       "third_party/gyp":
