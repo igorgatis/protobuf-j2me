@@ -168,9 +168,7 @@
     {
       'target_name': 'libprotobuf_lite',
       'type': 'static_library',
-      'cflags': [
-        '-Wno-deprecated',
-      ],
+      'cflags': [ '-O2', '-Os', '-Wno-deprecated' ],
       'ldflags': [
         '-pthread',
         '-no-undefined',
@@ -204,9 +202,7 @@
     {
       'target_name': 'libprotobuf',
       'type': 'static_library',
-      'cflags': [
-        '-Wno-deprecated',
-      ],
+      'cflags': [ '-O2', '-Os', '-Wno-deprecated' ],
       'ldflags': [
         '-pthread',
         '-no-undefined',
@@ -240,6 +236,7 @@
     {
       'target_name': 'libprotoc',
       'type': 'static_library',
+      'cflags': [ '-O2', '-Os' ],
       'include_dirs': [
         'trunk',
         'trunk/src',

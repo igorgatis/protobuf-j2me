@@ -96,7 +96,7 @@
     {
       'target_name': 'protoc-gen-j2me',
       'type': 'executable',
-      'cflags': [ '-O2', '-g', '-Wall' ],
+      'cflags': [ '-O2', '-Os', '-Wall' ],
       'include_dirs': [
         'src',
       ],
@@ -111,11 +111,10 @@
     {
       'target_name': 'protoc-j2me',
       'type': 'executable',
-      'cflags': [ '-O2', '-g', '-Wall' ],
+      'cflags': [ '-O2', '-Os', '-Wall' ],
       'include_dirs': [
         'src',
       ],
-      'cflags': [ '-O2', '-g', '-Wall' ],
       'dependencies': [
         '<(THIRD_PARTY)/protobuf/build.gyp:libprotoc',
         'libprotobuf-j2me',

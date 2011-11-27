@@ -1,9 +1,15 @@
 Package: protobuf-j2me
-Version: 2.3.0-01
-Section: base
-Priority: optional
-Architecture: i386
-Depends: libc6
+Version: 1.0.0
+Architecture: #ARCHITECTURE
 Maintainer: Igor Gatis <igorgatis@gmail.com>
-Description: Generates j2me optimized sources for protobuf messages.
- Generates Java 2 Mobile Edition (J2ME) optimized sources for protobuf messages.
+Installed-Size: #PACKAGE_SIZE
+Depends: libc6 (>= 2.2.5), libstdc++6 (>= 4.1.1), protobuf-compiler (>= 2.2.0), default-jre | java5-runtime
+Recommends: libprotobuf-java (>= 2.2.0)
+Section: devel
+Priority: extra
+Homepage: http://code.google.com/p/protobuf-j2me
+Description: Smallest Java bindings for protocol buffers
+ This package contains the smallest Java bindings for protocol buffers.
+ Although initially intended for Java 2 Micro Edition (J2ME) runtime
+ environment, both runtime and generated code are fully compatible with
+ Java 2 Standard Edition (J2SE and J2EE) as well as Android 1.5+.
