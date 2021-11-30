@@ -14,15 +14,15 @@ Google's official protobuf support for Java generates code which is incompatible
 
 ### protobuf 2.4.1 (Google Official) vs protobuf-j2me
 
-|| Feature                || protobuf || protobuf (lite-runtime) || protobuf-j2me ||
-|| *Runtime library size* ||   420KB  ||     77KB     ||     22KB      ||
-|| *Generated code size*  ||   100%   ||     73%      ||     26%       ||
-|| *Enumerations*         ||   Yes    ||     Yes      ||     Yes       ||
-|| *Unknown fields*       ||   Yes    ||     Yes      ||      No       ||
-|| *Immutability*         ||   Yes    ||     Yes      ||      No       ||
-|| *Groups (Deprecated)*  ||   Yes    ||     Yes      ||      No       ||
-|| *Reflection*           ||   Yes    ||      No      ||      No       ||
-|| *Descriptors*          ||   Yes    ||      No      ||      No       ||
+| Feature                | protobuf | protobuf (lite-runtime) | protobuf-j2me |
+| *Runtime library size* |   420KB  |     77KB     |     22KB      |
+| *Generated code size*  |   100%   |     73%      |     26%       |
+| *Enumerations*         |   Yes    |     Yes      |     Yes       |
+| *Unknown fields*       |   Yes    |     Yes      |      No       |
+| *Immutability*         |   Yes    |     Yes      |      No       |
+| *Groups (Deprecated)*  |   Yes    |     Yes      |      No       |
+| *Reflection*           |   Yes    |      No      |      No       |
+| *Descriptors*          |   Yes    |      No      |      No       |
 
 For details regarding these differences see [DesignDecisions].
 
